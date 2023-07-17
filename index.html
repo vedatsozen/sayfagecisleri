@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es-cl">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swipe on Mobile Devices</title>
+  <style>
+    .center {
+      font-size: 300%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .page {
+      position: absolute;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+    .page1 {
+      left: 0;
+      background-color: red;
+    }
+    .page2 {
+      left: 100%;
+      background-color: yellow;
+    }
+    .page3 {
+      left: 200%;
+      background-color: green;
+    }
+  </style>
+</head>
+<body>
+  <div
+    class="page page1"
+    id="page1"
+    ontouchstart="handleTouchStart(event)"
+    ontouchmove="handleTouchMove(event)"
+    ontouchend="handleTouchEnd(event)"
+  >
+    <span class="center">Page 1</span>
+  </div>
+  <div
+    class="page page2"
+    id="page2"
+    ontouchstart="handleTouchStart(event)"
+    ontouchmove="handleTouchMove(event)"
+    ontouchend="handleTouchEnd(event)"
+  >
+    <span class="center">Page 2</span>
+  </div>
+  <div
+    class="page page3"
+    id="page3"
+    ontouchstart="handleTouchStart(event)"
+    ontouchmove="handleTouchMove(event)"
+    ontouchend="handleTouchEnd(event)"
+  >
+    <span class="center">Page 3</span>
+  </div>
+  <script>
+    var pages = document.querySelectorAll('.page');
+    var startingX;
+
+    function handleTouchStart(evt) {
+      startingX = evt.touches[0].clientX;
+    }
+
+    function handleTouchMove(evt) {
+      var touch = evt.touches[0];
+      var change = startingX - touch.clientX;
+      var currentPage = evt.currentTarget;
+      var prevPage = currentPage.previousElementSibling;
+      var nextPage = currentPage.nextElementSibling;
+
+      if (change < 0 && prevPage) {
+        currentPage.style.left = '-' + change + 'px';
+        prevPage.style.left = '-' + (screen.width - change) + 'px';
+      } else if (change > 0 && nextPage) {
+        currentPage.style.left = '-' + change + 'px';
+        nextPage.style.left = (screen.width - change) + 'px';
+      }
+
+      evt.preventDefault();
+    }
+
+    function handleTouchEnd(evt) {
+      var currentPage = evt.currentTarget;
+      var change = startingX - evt.changedTouches[0].clientX;
+      var threshold = screen.width / 3;
+
+      if (change < -threshold) {
+        // Swipe right
+        var prevPage = currentPage.previousElementSibling;
+        if (prevPage) {
+          currentPage.style.transition = 'all .3s';
+          prevPage.style.transition = 'all .3s';
+          currentPage.style.left = '100%';
+          prevPage.style.left = '0';
+        }
+      } else if (change > threshold) {
+        // Swipe left
+        var nextPage = currentPage.nextElementSibling;
+        if (nextPage) {
+          currentPage.style.transition = 'all .3s';
+          nextPage.style.transition = 'all .3s';
+          currentPage.style.left = '-100%';
+          nextPage.style.left = '0';
+        }
+      } else {
+        // Reset position
+        currentPage.style.transition = 'all .3s';
+        var prevPage = currentPage.previousElementSibling;
+        var nextPage = currentPage.nextElementSibling;
+        currentPage.style.left = '0';
+        if (prevPage) prevPage.style.left = '100%';
+        if (nextPage) nextPage.style.left = '-100%';
+      }
+
+      // Clear transition after completing the swipe action
+      setTimeout(function () {
+        currentPage.style.transition = '';
+        var prevPage = currentPage.previousElementSibling;
+        var nextPage = currentPage.nextElementSibling;
+        if (prevPage) prevPage.style.transition = '';
+        if (nextPage) nextPage.style.transition = '';
+      }, 300);
+    }
+  </script>
+</body>
+</html>
