@@ -79,7 +79,7 @@
       if (change < 0 && prevPage) {
         currentPage.style.left = '-' + change + 'px';
         prevPage.style.left = '-' + (screen.width - change) + 'px';
-      } else if (change > 0 && nextPage) {
+      } else if (change > 0 && nextPage && nextPage.classList.contains('page3')) {
         currentPage.style.left = '-' + change + 'px';
         nextPage.style.left = (screen.width - change) + 'px';
       }
@@ -104,7 +104,7 @@
       } else if (change > threshold) {
         // Swipe left
         var nextPage = currentPage.nextElementSibling;
-        if (nextPage) {
+        if (nextPage && nextPage.classList.contains('page3')) {
           currentPage.style.transition = 'all .3s';
           nextPage.style.transition = 'all .3s';
           currentPage.style.left = '-100%';
@@ -117,7 +117,7 @@
         var nextPage = currentPage.nextElementSibling;
         currentPage.style.left = '0';
         if (prevPage) prevPage.style.left = '100%';
-        if (nextPage) nextPage.style.left = '-100%';
+        if (nextPage && nextPage.classList.contains('page3')) nextPage.style.left = '-100%';
       }
 
       // Clear transition after completing the swipe action
@@ -126,10 +126,11 @@
         var prevPage = currentPage.previousElementSibling;
         var nextPage = currentPage.nextElementSibling;
         if (prevPage) prevPage.style.transition = '';
-        if (nextPage) nextPage.style.transition = '';
+        if (nextPage && nextPage.classList.contains('page3')) nextPage.style.transition = '';
       }, 300);
     }
   </script>
 </body>
 </html>
+
 
