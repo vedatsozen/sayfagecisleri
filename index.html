@@ -58,19 +58,11 @@
   >
     <span class="center">Page 2</span>
   </div>
-  <div
-    class="page3"
-    id="page3"
-    ontouchstart="p3handleTouchStart(event)"
-    ontouchmove="p3handleTouchMove(event)"
-    ontouchend="p3handleTouchEnd(event)"
-  >
-    <span class="center">Page 3</span>
-  </div>
+
   <script>
     var p1 = document.getElementById('page1');
     var p2 = document.getElementById('page2');
-    var p3 = document.getElementById('page3');
+
     var startingX;
   
     function p1handleTouchStart(evt) {
@@ -139,39 +131,7 @@
       }
     }
   
-    function p3handleTouchStart(evt) {
-      startingX = evt.touches[0].clientX;
-      p2.style.transition = '';
-      p3.style.transition = '';
-      p2.style.display = 'none';
-    }
-  
-    function p3handleTouchMove(evt) {
-      var touch = evt.touches[0];
-      var change = touch.clientX - startingX;
-      if (change > 0) {
-        return; // Engelleme, sağa gitmeyi engelle.
-      }
-      p2.style.display = 'block';
-      p2.style.left = (screen.width + change) + 'px';
-      p3.style.left = change + 'px';
-      evt.preventDefault();
-    }
-  
-    function p3handleTouchEnd(evt) {
-      var change = evt.changedTouches[0].clientX - startingX;
-      var half = screen.width / 4;
-      if (change < -half) {
-        p2.style.left = '-100%';
-        p2.style.display = 'none';
-        p3.style.left = '0';
-      } else {
-        p2.style.transition = 'all .3s';
-        p3.style.transition = 'all .3s';
-        p2.style.left = '0';
-        p3.style.left = '100%';
-      }
-    }
+
   </script>
 </body>
 </html>
